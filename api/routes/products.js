@@ -90,10 +90,34 @@ router.post('/', (req, res) => {
 });
 
 // data patch
-router.patch('/',(req,res)=>{
-    res.status(200).json({
-        msg:'modify product'
-    });
+router.patch('/:productID',(req,res)=>{
+
+    const id = req.params.productID;
+    
+    const updateOps = {};
+
+    for(const ops of req.body){
+        updateOps[ops.proName] = ops.value;
+    }
+
+    productModel
+        .update({_id:id},{$set:updateOps})
+        .exec()
+        .then(result =>{
+            console.log(result);
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                err:err
+            });
+
+        });
+
+    // res.status(200).json({
+    //     msg:'modify product'
+    // });`
 });
 
 // data delete
