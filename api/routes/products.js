@@ -10,9 +10,17 @@ router.get('/',(req,res)=> {
 });
 
 // data create
-router.post('/', (req,res) =>{
-    res.status(200).json({
-        msg: 'create product'
+router.post('/', (req, res) => {
+
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+
+    };
+
+    res.status(201).json({
+        msg: 'create product',
+        productInfo: product
     });
 });
 
