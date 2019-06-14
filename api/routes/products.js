@@ -6,11 +6,55 @@ const productModel = require("../models/product");
 
 // data get
 router.get('/',(req,res)=> {
-    res.status(200).json({
-        msg:'sucesss get products'
-    });
+
+    productModel
+        .find()
+        .exec()
+        .then(docs =>{
+            console.log(docs);
+            res.status(200).json(docs);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                err:err
+            });
+        });
+
+    // res.status(200).json({
+    //     msg:'sucesss get products'
+    // });
 
 });
+
+//detail data get
+router.get('/:productID',(req,res) => {
+    const id = req.params.productID;
+    productModel
+        .findById(id)
+        .exec()
+        .then(doc => {
+            console.log("from database",doc);
+            if(doc)
+            {
+                res.status(200).json(doc);
+            }else{
+                res.status(400).json({
+                    msg:"no id "
+                });
+
+            }
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                err:err
+            });
+        });
+
+});
+
 
 // data create
 router.post('/', (req, res) => {
