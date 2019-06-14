@@ -97,10 +97,26 @@ router.patch('/',(req,res)=>{
 });
 
 // data delete
-router.delete('/',(req,res)=>{
-    res.status(200).json({
-        msg:'delete product'
-    });
+router.delete('/:productID',(req,res)=>{
+
+    const id  = req.params.productID;
+
+    productModel
+        .remove({_id:id})
+        .exec()
+        .then(result =>{
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                err:err
+            });
+        });
+
+    // res.status(200).json({
+    //     msg:'delete product'
+    // });
 });
 
 
