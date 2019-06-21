@@ -11,8 +11,22 @@ router.get('/',(req,res)=> {
         .find()
         .exec()
         .then(docs =>{
-            console.log(docs);
-            res.status(200).json(docs);
+            const response = {
+                count:docs.length,
+                products:docs.map(doc =>{
+                    return {
+                        name:doc.name,
+                        price:doc.price,
+                        _id:doc._id,
+                        request:{
+                            type:"GET",
+                            url:"http://localhost:3000/products/"+doc._id
+                        }
+                    }
+                })
+                
+            }
+            res.status(200).json(response);
         })
         .catch(err => {
             console.log(err);
@@ -37,7 +51,13 @@ router.get('/:productID',(req,res) => {
             console.log("from database",doc);
             if(doc)
             {
-                res.status(200).json(doc);
+                res.status(200).json({
+                    product :doc,
+                    request:{
+                        type:"GET",
+                        url:"http://localhost:3000/products"
+                    }
+                });
             }else{
                 res.status(400).json({
                     msg:"no id "
@@ -72,7 +92,11 @@ router.post('/', (req, res) => {
             console.log(result);
             res.status(200).json({
                 msg:'suceess post ',
-                createdProduct:result
+                createdProduct: result,
+                request:{
+                    type:"GET",
+                    url:"http://localhost:3000/products/"
+                }
             });
         })
         .catch(err => {
@@ -105,7 +129,13 @@ router.patch('/:productID',(req,res)=>{
         .exec()
         .then(result =>{
             console.log(result);
-            res.status(200).json(result);
+            res.status(200).json({
+                msg:"product updated",
+                request:{
+                    type:"GET",
+                    url:"http://localhost:3000/products/"+id
+                }
+            });
         })
         .catch(err => {
             console.log(err);
@@ -129,7 +159,15 @@ router.delete('/:productID',(req,res)=>{
         .remove({_id:id})
         .exec()
         .then(result =>{
-            res.status(200).json(result);
+            res.status(200).json({
+                msg:'product deleted',
+                request:{
+                    type:'POST',
+                    url:'http://localhost:3000/products',
+                    body:{name:'String',price:'String'}
+                }
+            });
+        
         })
         .catch(err => {
             console.log(err);
