@@ -8,6 +8,7 @@ const mongoose =require('mongoose');
 
 const productRoutes = require('./api/routes/products');
 const ordersRoutes = require('./api/routes/orders');
+const usersRoutes = require('./api/routes/users');
 
 const db = 'mongodb+srv://teddy:1234@cluster0-4ahzv.mongodb.net/test?retryWrites=true&w=majority';
 
@@ -24,6 +25,9 @@ app.use(morgan('dev'));
 
 app.use('/products',productRoutes);
 app.use('/orders', ordersRoutes);
+app.use('/users',usersRoutes);
+
+
 
 // app.use('/', (req,res) => {
 //     res.status(200).json({
