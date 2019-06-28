@@ -14,7 +14,7 @@ const db = 'mongodb+srv://teddy:1234@cluster0-4ahzv.mongodb.net/test?retryWrites
 
 
 
-mongoose.connect(db, {useNewUrlParser:true})
+mongoose.connect(db, {useNewUrlParser:true, useCreateIndex:true})
     .then(() => console.log("MongoDB Connected..."))
     .catch(err => console.log(err));
 
